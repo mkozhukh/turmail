@@ -1,0 +1,4 @@
+from: some@ya.ru
+envelope: Plain
+subject: Test email
+body: Test {{name}}

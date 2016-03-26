@@ -1,0 +1,28 @@
+{
+  "name": "turmail",
+  "version": "1.0.0",
+  "description": "Mail templating engine for MailGun",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "mail",
+    "template",
+    "mailgun",
+    "handlebars",
+    "yaml"
+  ],
+  "author": "Maksim Kozhukh",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^3.3.4",
+    "handlebars": "^4.0.5",
+    "js-yaml": "^3.5.5",
+    "mailgun-js": "^0.7.7"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5"
+  }
+}
