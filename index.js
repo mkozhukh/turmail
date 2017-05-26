@@ -45,7 +45,7 @@ function send(letter_id, data){
 	return getEmail(letter_id)
 		.then(email => mailgun.messages().send({
 			from: data.from || email.letter.from,
-			to: data.to,
+			to: data.to || email.letter.to,
 			subject: data.subject || email.letter.subject,
 			html: email.text(data),
 			'o:testmode': email.test
