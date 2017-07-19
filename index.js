@@ -4,6 +4,15 @@ var promise = require("bluebird");
 var handlebars = require('handlebars');
 var fs = promise.promisifyAll(require("fs"));
 
+//compare operations in email templates
+handlebars.registerHelper('equal', function(lvalue, rvalue, options) {
+    if( lvalue!=rvalue ) {
+        return options.inverse(this);
+    } else {
+        return options.fn(this);
+    }
+});
+
 var templates_path;
 var mailgun;
 
@@ -16,13 +25,17 @@ function getLetter(file){
 		return promise.resolve(email_cache[file]);
 
 	return fs.readFileAsync( path.join(templates_path, "letters", file+".yaml"), "utf-8")
-		.then(text => email_cache[file] = yaml.safeLoad(text));
+		.then(text => {
+			var temp = email_cache[file] = yaml.safeLoad(text)
+			temp.id = file;
+			return temp;
+		});
 }
 function getEnvelope(file, data){
-	if (use_cache && envelope_cache[file])
-		return promise.resolve(envelope_cache[file]);
+	if (use_cache && envelope_cache[file+"*"+data.id])
+		return promise.resolve(envelope_cache[file+"*"+data.id]);
 	return fs.readFileAsync( path.join(templates_path, "envelopes", file+".html"), "utf-8")
-		.then(text => envelope_cache[file] = handlebars.compile(handlebars.compile(text)(data)));
+		.then(text => envelope_cache[file+"*"+data.id] = handlebars.compile(handlebars.compile(text)(data)));
 }
 
 function getEmail(letter_id){

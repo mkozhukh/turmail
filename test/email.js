@@ -4,7 +4,7 @@ var mail = require("../index.js");
 
 
 //set mailgun key to run the sending test
-var key; //="mailgun key";
+var key = 1; //="mailgun key";
 
 mail.init({ path: "./templates", key:key, domain:"mail.webix.io" });
 
@@ -26,8 +26,15 @@ describe("turmail", ()=>{
 			expect(mail.text({ name:"Maksim" })).to.equal(`Message: Test Maksim`);
 		});
 	});
+	it('supports equal operaiton', ()=> {
+		return mail.getEmail("TestEqual").then(mail => {
+			expect(mail.text({ product:"box" }).trim()).to.equal('Message: Take your BOX please.');
+			expect(mail.text({ product:"other" }).trim()).to.equal('Message: Take your SPHERE please.');
+			expect(mail.text({ }).trim()).to.equal('Message: Take your SPHERE please.');
+		});
+	});
 	it('sends email', () =>{
-		if (!key) return true;
+		if (!key || key === 1) return true;
 
 		return mail.send("Test", { 
 			name:"Maksim",
